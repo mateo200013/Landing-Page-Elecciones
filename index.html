@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Votación Bicentenario Bolivia</title>
+  <link rel="stylesheet" href="estilos\estilos.css" />
+</head>
+<body>
+  <!-- FORMULARIO DE REGISTRO -->
+  <form id="registerForm" class="hidden">
+    <h2>Registro</h2>
+    <label for="regName">Nombre completo:</label>
+    <input type="text" id="regName" name="regName" required />
+    <br />
+
+    <label for="regBirthDate">Fecha de nacimiento:</label>
+    <input type="date" id="regBirthDate" name="regBirthDate" required />
+    <br />
+    
+    <label for="regCI">C.I.:</label>
+    <input type="text" id="regCI" name="regCI"
+        pattern="[0-9]{7,8}[A-Z]{1,2}"
+         title="Ejemplo: 15542158LP — solo números seguidos de 1 o 2 letras mayúsculas (como LP, CB, SC)"
+         placeholder="15542158LP"
+         maxlength="10"
+         autocomplete="off" required />
+    <br />
+
+     <label for="regEmail">Correo electrónico:</label>
+        <input type="email" id="regEmail" name="regEmail"
+             pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
+             title="Solo se permiten correos de Gmail (ej: marceorozco1306@gmail.com)"
+             placeholder="marceorozco1306@gmail.com"
+             autocomplete="off" required />
+    <br />
+
+  <label for="regPassword">Contraseña:</label>
+        <div class="password-wrapper">
+        <input type="password" id="regPassword" name="regPassword" autocomplete="off" required />
+         <span class="toggle-password" data-target="regPassword">👁</span>
+        </div>
+        <small style="color: gray;">
+     La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, un número y un símbolo especial.<br>
+     Ejemplo: <strong>Ejemplo123!</strong>
+    </small>
+    <br />
+
+   <label for="regVoteDate">Fecha de votación:</label>
+    <input type="text" id="regVoteDate" name="regVoteDate" readonly />
+    <small>Este campo se completará automáticamente.</small>
+    <br />
+
+    <button type="button" id="sendCodeBtn">Enviar código de verificación</button>
+    <br />
+
+    <label for="verificationCode" id="labelVerificationCode" class="hidden">Código de verificación:</label>
+    <input type="text" id="verificationCode" class="hidden" maxlength="6" autocomplete="off" />
+    <br />
+
+    <button type="submit">Registrar</button>
+    <p class="message"></p>
+
+    <p><button type="button" id="goToLogin">¿Ya tienes cuenta? Iniciar sesión</button></p>
+    <p><button type="button" id="goToRecovery">¿Olvidaste tu contraseña?</button></p>
+  </form>
+
+  <!-- FORMULARIO DE INICIO DE SESIÓN -->
+  <form id="loginForm" class="hidden">
+    <h2>Iniciar Sesión</h2>
+    <label for="loginCI">C.I.:</label>
+    <input type="text" id="loginCI" name="loginCI" maxlength="10" autocomplete="off" required />
+    <br />
+
+    <label for="loginPassword">Contraseña:</label>
+    <div class="password-wrapper">
+      <input type="password" id="loginPassword" name="loginPassword" autocomplete="off" required />
+      <span class="toggle-password" data-target="loginPassword">👁</span>
+    </div>
+    <br />
+
+    <button type="submit">Iniciar sesión</button>
+    <p class="message"></p>
+
+    <p><button type="button" id="goToRegister">¿No tienes cuenta? Regístrate</button></p>
+    <p><button type="button" id="goToRecovery">¿Olvidaste tu contraseña?</button></p>
+  </form>
+
+  <!-- FORMULARIO DE RECUPERACIÓN -->
+  <form id="recoveryForm" class="hidden">
+    <h2>Recuperar Contraseña</h2>
+    <label for="recoveryCI">C.I.:</label>
+    <input type="text" id="recoveryCI" name="recoveryCI" maxlength="10" autocomplete="off" required />
+    <br />
+
+    <button type="button" id="sendRecoveryCodeBtn">Enviar código de recuperación</button>
+    <br />
+
+    <label for="recoveryCode" id="labelRecoveryCode" class="hidden">Código de recuperación:</label>
+    <input type="text" id="recoveryCode" class="hidden" maxlength="6" autocomplete="off" />
+    <br />
+
+    <div id="newPasswordContainer" class="hidden">
+      <label for="newPassword" id="labelNewPassword" class="hidden">Nueva contraseña:</label>
+      <div class="password-wrapper">
+        <input type="password" id="newPassword" autocomplete="off" />
+        <span class="toggle-password" data-target="newPassword">👁</span>
+      </div>
+      <br />
+    </div>
+
+    <button type="button" id="resetPasswordBtn" class="hidden">Restablecer contraseña</button>
+    <p class="message"></p>
+
+    <p><button type="button" id="goToLoginFromRecovery">Volver a iniciar sesión</button></p>
+  </form>
+
+  <!-- LANDING PAGE DE VOTACIÓN -->
+  <section id="voteLanding" class="hidden">
+    <h1>Bicentenario Bolivia - Elecciones Presidenciales</h1>
+
+    <form id="landingVoteForm">
+      <h3>Elige tu partido para votar:</h3>
+      <label class="radio-label">
+        <input type="radio" name="party" value="MAS-IPSP" required />
+        <img src="img\i1.jpg" alt="MAS-IPSP" />
+        MAS-IPSP
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="party" value="Comunidad Ciudadana" />
+        <img src="img\i2.png" alt="Comunidad Ciudadana" />
+        Comunidad Ciudadana (CC)
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="party" value="Creemos" />
+        <img src="img\i3.jpg" alt="Creemos" />
+        Creemos
+      </label>
+      <button type="submit" id="submitVoteBtn">Votar</button>
+    </form>
+
+    <canvas id="resultsChart" width="300" height="300"></canvas>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Votante</th>
+          <th>Voto</th>
+        </tr>
+      </thead>
+      <tbody id="votesTableBody">
+        <!-- Votos aparecerán aquí -->
+      </tbody>
+    </table>
+
+    <button id="logoutFromLanding">Cerrar sesión</button>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js\script.js"></script>
+</body>
+</html>
